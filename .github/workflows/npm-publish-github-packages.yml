@@ -4,8 +4,8 @@
 name: Node.js Package
 
 on:
-  release:
-    types: [created]
+  push:
+  workflow_dispatch: 
 
 jobs:
   build:
@@ -27,20 +27,26 @@ jobs:
     steps:
       - name: check out code
         uses: actions/checkout@v4
+        
       - name: Install NodeJS 20
         uses: actions/setup-node@v4
         with:
           node-version: 20
           registry-url: https://npm.pkg.github.com/
+          
       - name: "show the secret of VIctoria"
         run: |
               echo "now we will see the victoria secret : ${{secrets.VICTORIA_SECRET}}"
+              
       - run: npm ci
       - run: npm run build --if-present
+      
       - name: Running & testing the node app
         run: |
               npm start &
+              npx wait-on http://localhost:3000
               curl http://localhost:3000
+              
       - name: Publish The Node Package to Github
         run: npm publish
         env:
