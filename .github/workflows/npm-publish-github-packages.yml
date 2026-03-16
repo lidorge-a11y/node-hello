@@ -37,6 +37,9 @@ jobs:
       - name: "show the secret of VIctoria"
         run: |
               echo "now we will see the victoria secret : ${{secrets.VICTORIA_SECRET}}"
+      - name: show me the Variable
+        run: |
+              echo "the vairable is: ${{vars.var1}}"
               
       - run: npm ci
       - run: npm run build --if-present
